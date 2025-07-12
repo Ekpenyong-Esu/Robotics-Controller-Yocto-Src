@@ -1,0 +1,6 @@
+#pragma once
+
+#define ROBOTICS_VERSION_MAJOR @RoboticsControllerProject_VERSION_MAJOR@
+#define ROBOTICS_VERSION_MINOR @RoboticsControllerProject_VERSION_MINOR@
+#define ROBOTICS_VERSION_PATCH @RoboticsControllerProject_VERSION_PATCH@
+#define ROBOTICS_VERSION_STRING "@RoboticsControllerProject_VERSION@"

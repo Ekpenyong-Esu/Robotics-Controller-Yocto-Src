@@ -1,0 +1,33 @@
+# Ignore Yocto build artifacts
+build/
+tmp/
+downloads/
+sstate-cache/
+cache/
+buildhistory/
+
+# Ignore backup files
+*~
+*.swp
+*.bak
+
+# Ignore IDE and editor files
+.vscode/
+.idea/
+*.iml
+*.sublime*
+
+# Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore output directories
+output/
+deploy/
+poky/
+meta-openembedded/

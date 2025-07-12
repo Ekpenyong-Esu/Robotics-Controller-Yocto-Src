@@ -1,0 +1,2122 @@
+/**
+ * ROBOTICS CONTROLLER WEB INTERFACE STYLES
+ * ========================================
+ *
+ * This CSS file provides the complete styling for a robotics controller
+ * web interface. It includes a modern dark theme, responsive design,
+ * and comprehensive styling for all UI components.
+ *
+ * Structure:
+ * 1. CSS Custom Properties (Variables)
+ * 2. Base Styles & Typography
+ * 3. Layout Components
+ * 4. Control Elements
+ * 5. Data Display Components
+ * 6. Responsive Design
+ * 7. Animations & Transitions
+ */
+
+/* ===== CSS CUSTOM PROPERTIES (VARIABLES) ===== */
+/* CSS variables allow us to reuse values throughout the stylesheet
+   and maintain consistency. They're defined once and can be updated
+   dynamically with JavaScript if needed. */
+
+:root {
+    /* === COLOR SYSTEM === */
+    /* Primary colors for main UI elements and branding */
+    --primary-color: #667eea; /* Main brand color - purple-blue */
+    --primary-light: #7c3aed; /* Lighter variant for hover states */
+
+    /* Semantic colors for different types of feedback */
+    --secondary-color: #10b981; /* Success/positive actions - green */
+    --danger-color: #ef4444; /* Errors/dangerous actions - red */
+    --warning-color: #f59e0b; /* Warnings/caution - amber */
+    --success-color: #10b981; /* Success confirmations - green */
+    --info-color: #3b82f6; /* Information/neutral - blue */
+
+    /* === DARK THEME FOUNDATION === */
+    /* Dark theme provides better visibility in low-light robotics environments */
+    --background-color: #0f172a; /* Main background - very dark slate */
+    --background-secondary: #1e293b; /* Secondary surfaces - dark slate */
+    --panel-background: #1e293b; /* Panel/card backgrounds */
+    --panel-border: #334155; /* Panel borders and separators */
+    --text-color: #f1f5f9; /* Primary text - light gray */
+    --text-secondary: #94a3b8; /* Secondary text - medium gray */
+    --border-color: #334155; /* General borders and dividers */
+
+    /* === SHADOW SYSTEM === */
+    /* Shadows create depth and visual hierarchy in the interface */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Subtle shadow for small elements */
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        /* Standard shadow for cards/panels */ 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        /* Large shadow for floating elements */ 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        /* Extra large shadow for modals */ 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* === BORDER RADIUS SYSTEM === */
+    /* Consistent border radius values for different element sizes */
+    --radius-sm: 0.375rem; /* Small elements (6px) */
+    --radius: 0.5rem; /* Standard elements (8px) */
+    --radius-lg: 0.75rem; /* Large elements (12px) */
+    --radius-xl: 1rem; /* Extra large elements (16px) */
+
+    /* === SPACING SYSTEM === */
+    /* Consistent spacing values for margins and padding */
+    --spacing-xs: 0.25rem; /* Extra small spacing (4px) */
+    --spacing-sm: 0.5rem; /* Small spacing (8px) */
+    --spacing: 1rem; /* Standard spacing (16px) */
+    --spacing-lg: 1.5rem; /* Large spacing (24px) */
+    --spacing-xl: 2rem; /* Extra large spacing (32px) */
+
+    /* === TYPOGRAPHY === */
+    /* Font family for code/terminal displays - monospace ensures proper alignment */
+    --font-mono: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+}
+
+/* ===== BASE STYLES & RESET ===== */
+/* Universal reset and base styling for all elements */
+
+* {
+    /* Reset default browser margins and padding for consistent rendering */
+    margin: 0;
+    padding: 0;
+    /* Use border-box model: width/height includes padding and border */
+    box-sizing: border-box;
+}
+
+body {
+    /* Typography: Sans-serif font stack for readability */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+
+    /* Background: Gradient for visual depth */
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+
+    /* Color scheme using CSS variables */
+    color: var(--text-color);
+
+    /* Typography settings */
+    line-height: 1.6; /* Improved readability */
+
+    /* Layout: Full height and prevent horizontal scroll */
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* ===== MAIN CONTAINER ===== */
+/* Central container that holds all content with responsive width */
+.container {
+    max-width: 1400px; /* Maximum width for large screens */
+    margin: 0 auto; /* Center the container */
+    padding: var(--spacing-lg); /* Consistent padding using design system */
+}
+
+/* ===== HEADER COMPONENT ===== */
+/* Main navigation header with status indicators */
+
+header {
+    /* Visual styling: Gradient background for depth */
+    background: linear-gradient(
+        135deg,
+        var(--panel-background) 0%,
+        var(--background-secondary) 100%
+    );
+
+    /* Spacing and layout */
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+
+    /* Visual effects */
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--panel-border);
+
+    /* Flexbox layout: space between title and status */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    /* Positioning context for any absolute children */
+    position: relative;
+}
+
+/* Main heading styling */
+header h1 {
+    color: var(--text-color);
+    font-size: 2.5rem; /* Large, prominent heading */
+    font-weight: 700; /* Bold weight for importance */
+
+    /* Flexbox for icon + text alignment */
+    display: flex;
+    align-items: center;
+    gap: var(--spacing); /* Space between icon and text */
+}
+
+/* ===== STATUS BAR COMPONENT ===== */
+/* Shows connection status, mode, and other system info */
+.status-bar {
+    /* Flexbox layout for status items */
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+
+    /* Visual styling */
+    padding: var(--spacing-sm) var(--spacing);
+    background: var(--background-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+}
+
+/* ===== STATUS INDICATORS ===== */
+/* Visual feedback for connection and system status */
+
+.status-indicator {
+    font-size: 1.2rem; /* Larger size for visibility */
+    animation: pulse 2s infinite; /* Subtle pulsing animation */
+    filter: drop-shadow(0 0 4px currentColor); /* Glow effect */
+}
+
+/* Connection status color coding */
+.status-indicator.connected {
+    color: var(--success-color); /* Green for connected */
+}
+
+.status-indicator.disconnected {
+    color: var(--danger-color); /* Red for disconnected */
+}
+
+.status-indicator.warning {
+    color: var(--warning-color); /* Amber for warnings */
+}
+
+/* Status text styling */
+#status-text {
+    font-weight: 600; /* Semi-bold for readability */
+    color: var(--text-color);
+}
+
+/* ===== MODE DISPLAY BADGE ===== */
+/* Shows current operational mode (manual, auto, etc.) */
+.mode-display {
+    /* Spacing and layout */
+    padding: var(--spacing-xs) var(--spacing-sm);
+
+    /* Visual styling: Badge appearance */
+    background: var(--primary-color);
+    color: white;
+    border-radius: var(--radius);
+    font-size: 0.875rem; /* Slightly smaller text */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Main Grid Layout */
+.control-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Modern Panel Styles */
+.control-panel,
+.status-panel,
+.telemetry-panel,
+.camera-panel,
+.navigation-panel {
+    background: var(--panel-background);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--panel-border);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 450px;
+}
+
+.control-panel:hover,
+.status-panel:hover,
+.telemetry-panel:hover,
+.camera-panel:hover,
+.navigation-panel:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl), 0 0 30px rgba(102, 126, 234, 0.1);
+    border-color: var(--primary-color);
+}
+
+.control-panel h2,
+.status-panel h2,
+.telemetry-panel h2,
+.camera-panel h2,
+.navigation-panel h2 {
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-color);
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    position: relative;
+    padding-bottom: var(--spacing);
+    flex-shrink: 0;
+}
+
+.control-panel h2::after,
+.status-panel h2::after,
+.telemetry-panel h2::after,
+.camera-panel h2::after,
+.navigation-panel h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), transparent);
+    border-radius: var(--radius);
+}
+
+/* Enhanced Movement Controls */
+.movement-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing);
+    padding: var(--spacing-xl);
+    background: linear-gradient(
+        135deg,
+        var(--background-secondary),
+        var(--panel-background)
+    );
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+    position: relative;
+    flex: 1;
+    justify-content: center;
+}
+
+.movement-controls::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(102, 126, 234, 0.1),
+        rgba(16, 185, 129, 0.1)
+    );
+    border-radius: var(--radius-lg);
+    opacity: 0.5;
+}
+
+.movement-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing);
+    position: relative;
+    z-index: 1;
+}
+
+.movement-row.top-row,
+.movement-row.bottom-row {
+    width: 100%;
+    justify-content: center;
+}
+
+.movement-row.middle-row {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== BUTTON COMPONENTS ===== */
+/* Modern, interactive button styles for robotics controls */
+
+/* === MOVEMENT CONTROL BUTTONS === */
+/* Main directional control buttons (forward, backward, left, right) */
+.movement-btn {
+    /* Visual design: Gradient background for modern appearance */
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-light)
+    );
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+
+    /* Size and layout */
+    width: 4rem; /* 64px - large enough for touch */
+    height: 4rem; /* Square buttons for consistency */
+
+    /* Typography */
+    font-size: 1.5rem; /* Large icons/text for visibility */
+    font-weight: 600; /* Semi-bold for clarity */
+
+    /* Interaction */
+    cursor: pointer; /* Show it's clickable */
+    user-select: none; /* Prevent text selection */
+
+    /* Animations and effects */
+    transition: all 0.3s ease; /* Smooth transitions for all properties */
+    box-shadow: var(--shadow); /* Initial shadow for depth */
+
+    /* Layout: Center content (icons or text) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Subtle border for definition */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === BUTTON HOVER EFFECTS === */
+/* Visual feedback when user hovers over buttons */
+.movement-btn:hover {
+    /* Lift effect: Move up slightly */
+    transform: translateY(-2px);
+    /* Enhanced shadow for floating effect */
+    box-shadow: var(--shadow-lg);
+}
+
+/* === BUTTON ACTIVE/PRESSED EFFECTS === */
+/* Visual feedback when button is actually pressed */
+.movement-btn:active {
+    /* Press down effect: scale slightly smaller and move back down */
+    transform: translateY(0) scale(0.98);
+    /* Reduced shadow for pressed appearance */
+    box-shadow: var(--shadow-sm);
+}
+
+/* === EMERGENCY STOP BUTTON === */
+/* Special styling for the stop button - more prominent and warning color */
+.movement-btn.stop {
+    /* Danger colors for emergency stop */
+    background: linear-gradient(135deg, var(--danger-color), #dc2626);
+
+    /* Different size to stand out */
+    width: 5rem; /* Wider than normal buttons */
+    height: 3rem; /* Shorter height */
+    border-radius: var(--radius); /* Less rounded for distinction */
+    font-size: 0.875rem; /* Smaller text to fit "STOP" */
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.movement-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.movement-btn:disabled:hover {
+    transform: none;
+    filter: none;
+}
+
+.movement-btn.pressed {
+    background: linear-gradient(145deg, #3d8b40, #2e7d32);
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stop-btn {
+    background: linear-gradient(145deg, var(--danger-color), #d32f2f);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.4);
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stop-btn:hover {
+    background: linear-gradient(145deg, #d32f2f, var(--danger-color));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(244, 67, 54, 0.5);
+}
+
+.stop-btn:active {
+    transform: translateY(1px);
+}
+
+.stop-btn.pressed {
+    background: linear-gradient(145deg, #b71c1c, #c62828);
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.6);
+}
+
+/* Enhanced Speed Control */
+.speed-control {
+    margin-top: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--background-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+}
+
+.speed-control label {
+    display: block;
+    margin-bottom: var(--spacing);
+    font-weight: 600;
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1rem;
+}
+
+#speed-value {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+.speed-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: var(--radius);
+    background: linear-gradient(
+        to right,
+        var(--panel-border) 0%,
+        var(--panel-border) 100%
+    );
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+}
+
+.speed-slider::-webkit-slider-track {
+    height: 8px;
+    border-radius: var(--radius);
+    background: var(--panel-border);
+}
+
+.speed-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-light)
+    );
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 2px solid white;
+    transition: all 0.3s ease;
+}
+
+.speed-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-lg);
+}
+
+.speed-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-light)
+    );
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.speed-slider::-moz-range-track {
+    height: 8px;
+    background: var(--panel-border);
+    border-radius: var(--radius);
+    border: none;
+}
+
+/* Speed Control Enhancements */
+.speed-indicators {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-sm);
+    padding: 0 var(--spacing-xs);
+}
+
+.speed-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Modern Control Buttons */
+.control-row {
+    display: flex;
+    gap: var(--spacing);
+    align-items: center;
+    margin-bottom: var(--spacing);
+}
+
+.control-btn,
+.mode-btn,
+.actuator-btn {
+    padding: var(--spacing) var(--spacing-lg);
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(
+        135deg,
+        var(--background-secondary),
+        var(--panel-background)
+    );
+    color: var(--text-color);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.control-btn:hover,
+.mode-btn:hover,
+.actuator-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-light)
+    );
+    color: white;
+}
+
+.control-btn:active,
+.mode-btn:active,
+.actuator-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.control-btn.active,
+.mode-btn.active,
+.actuator-btn.active {
+    background: linear-gradient(135deg, var(--secondary-color), #059669);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+/* Enhanced Sensor Grid */
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing);
+    flex: 1;
+    align-content: start;
+}
+
+.sensor-item {
+    background: var(--panel-background);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+}
+
+.sensor-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+        90deg,
+        var(--primary-color),
+        var(--secondary-color)
+    );
+}
+
+.sensor-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.sensor-item h3 {
+    color: var(--text-color);
+    margin-bottom: var(--spacing);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.sensor-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    transition: all 0.3s ease;
+    line-height: 1.2;
+}
+
+.sensor-value.updating {
+    color: var(--warning-color);
+}
+
+.sensor-unit {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-left: var(--spacing-xs);
+}
+
+.sensor-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: var(--spacing-sm);
+}
+
+.sensor-status.valid {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.sensor-status.invalid {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Sensor item layout */
+.sensor-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sensor-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.sensor-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Modern Log Panel */
+.log-panel {
+    grid-column: 1 / -1;
+    background: var(--panel-background);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.log-header {
+    background: linear-gradient(
+        135deg,
+        var(--background-secondary),
+        var(--panel-background)
+    );
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--panel-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing);
+}
+
+.log-header h2 {
+    color: var(--text-color);
+    font-weight: 700;
+    margin: 0;
+}
+
+.log-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.log-filter {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    background: var(--background-secondary);
+    color: var(--text-color);
+    font-size: 0.875rem;
+}
+
+.log-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: none;
+    border-radius: var(--radius);
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.log-btn:hover {
+    background: var(--primary-light);
+    transform: translateY(-1px);
+}
+
+.log-btn.danger {
+    background: var(--danger-color);
+}
+
+.log-btn.danger:hover {
+    background: #dc2626;
+}
+
+.log-container {
+    height: 300px;
+    overflow-y: auto;
+    padding: var(--spacing);
+    background: var(--background-secondary);
+}
+
+.log-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log-container::-webkit-scrollbar-track {
+    background: var(--panel-border);
+    border-radius: var(--radius);
+}
+
+.log-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: var(--radius);
+}
+
+.log-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+}
+
+.log-entry {
+    padding: var(--spacing-sm) var(--spacing);
+    margin-bottom: var(--spacing-xs);
+    border-radius: var(--radius);
+    border-left: 3px solid transparent;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    transition: all 0.2s ease;
+}
+
+.log-entry:hover {
+    background: var(--panel-background);
+    transform: translateX(4px);
+}
+
+.log-entry.info {
+    border-left-color: var(--info-color);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.log-entry.warning {
+    border-left-color: var(--warning-color);
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.log-entry.error {
+    border-left-color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.log-timestamp {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.log-message {
+    color: var(--text-color);
+    margin-left: var(--spacing-sm);
+}
+
+/* Enhanced Mode Controls */
+.mode-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background: linear-gradient(
+        135deg,
+        var(--background-secondary),
+        var(--panel-background)
+    );
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--panel-border);
+    flex: 1;
+}
+
+.mode-selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing);
+    flex: 1;
+}
+
+.mode-btn {
+    background: linear-gradient(
+        135deg,
+        var(--panel-background),
+        var(--background-secondary)
+    );
+    color: var(--text-color);
+    border: 2px solid var(--panel-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    position: relative;
+    overflow: hidden;
+    min-height: 130px;
+    justify-content: center;
+    font-family: inherit;
+}
+
+.mode-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(102, 126, 234, 0.1),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.mode-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+    background: linear-gradient(
+        135deg,
+        var(--primary-color),
+        var(--primary-light)
+    );
+    color: white;
+}
+
+.mode-btn:hover::before {
+    left: 100%;
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, var(--secondary-color), #059669);
+    border-color: var(--secondary-color);
+    color: white;
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(16, 185, 129, 0.3);
+    transform: translateY(-2px);
+}
+
+.mode-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.mode-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--spacing-xs);
+}
+
+.mode-desc {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.emergency-section {
+    margin-top: auto;
+    padding-top: var(--spacing-lg);
+}
+
+.emergency-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--danger-color), #dc2626);
+    color: white;
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+    min-height: 90px;
+    justify-content: center;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.emergency-btn:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+}
+
+.emergency-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.emergency-icon {
+    font-size: 1.5rem;
+}
+
+.emergency-text {
+    font-size: 0.9rem;
+}
+
+.mode-controls h3,
+.actuator-controls h3,
+.camera-controls h3 {
+    margin-bottom: var(--spacing);
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.control-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.control-group:last-child {
+    margin-bottom: 0;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.control-input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    background: var(--background-secondary);
+    color: var(--text-color);
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.control-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* System Alerts */
+.system-alerts {
+    margin-bottom: var(--spacing-xl);
+}
+
+.alert {
+    padding: var(--spacing) var(--spacing-lg);
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing);
+    border-left: 4px solid;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing);
+}
+
+.alert.info {
+    background: rgba(59, 130, 246, 0.1);
+    border-left-color: var(--info-color);
+    color: var(--info-color);
+}
+
+.alert.warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-left-color: var(--warning-color);
+    color: var(--warning-color);
+}
+
+.alert.error {
+    background: rgba(239, 68, 68, 0.1);
+    border-left-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.alert.success {
+    background: rgba(16, 185, 129, 0.1);
+    border-left-color: var(--success-color);
+    color: var(--success-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing);
+    }
+
+    .control-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing);
+    }
+
+    .sensor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .movement-controls {
+        padding: var(--spacing);
+    }
+
+    .movement-btn {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.2rem;
+    }
+
+    .movement-btn.stop {
+        width: 4rem;
+        height: 2.5rem;
+    }
+
+    header {
+        flex-direction: column;
+        gap: var(--spacing);
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .log-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .log-controls {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .control-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+        min-width: 45px;
+        min-height: 45px;
+    }
+
+    .movement-controls .control-row {
+        gap: 8px;
+    }
+
+    /* Smaller movement controls for mobile */
+    .movement-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+
+    .stop-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
+    }
+
+    .movement-controls {
+        padding: 10px;
+        gap: 6px;
+    }
+
+    .speed-control {
+        margin-top: 15px;
+    }
+
+    .speed-control label {
+        font-size: 14px;
+    }
+
+    /* Mobile panel adjustments */
+    .status-card,
+    .telemetry-card,
+    .nav-card {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .status-icon,
+    .telemetry-icon,
+    .nav-icon {
+        font-size: 1.2rem;
+    }
+
+    .motor-card,
+    .servo-card {
+        padding: 12px;
+    }
+
+    .telemetry-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .navigation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .camera-info {
+        grid-template-columns: 1fr;
+    }
+
+    .camera-controls {
+        gap: 6px;
+    }
+
+    .camera-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}
+
+/* Utility Classes */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Enhanced Focus States */
+.movement-btn:focus,
+.mode-btn:focus,
+.control-btn:focus,
+.log-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Status Grid */
+.status-grid,
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.status-item,
+.telemetry-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--background-color);
+    border-radius: 5px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.status-label,
+.telemetry-label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.status-value,
+.telemetry-value {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.status-value.connected {
+    color: var(--success-color);
+}
+
+.status-value.disconnected {
+    color: var(--danger-color);
+}
+
+.status-value.warning {
+    color: var(--warning-color);
+}
+
+/* Status Panel Enhanced */
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.status-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.status-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.status-icon {
+    font-size: 1.5rem;
+    min-width: 30px;
+    text-align: center;
+}
+
+.status-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.status-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.status-value {
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.status-value.connected {
+    color: var(--secondary-color);
+}
+
+.status-value.disconnected {
+    color: var(--danger-color);
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-indicator.connected {
+    background: var(--secondary-color);
+}
+
+.status-indicator.disconnected {
+    background: var(--danger-color);
+}
+
+/* Telemetry Panel Enhanced */
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.telemetry-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.telemetry-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.telemetry-icon {
+    font-size: 1.3rem;
+    min-width: 25px;
+    text-align: center;
+}
+
+.telemetry-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.telemetry-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.telemetry-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.telemetry-unit {
+    font-size: 0.75rem;
+    color: #888;
+    font-weight: normal;
+}
+
+/* Navigation Panel Enhanced */
+.navigation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.nav-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.nav-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-icon {
+    font-size: 1.3rem;
+    min-width: 25px;
+    text-align: center;
+}
+
+.nav-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nav-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.nav-value {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+    background: var(--panel-background);
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+.footer-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Enhanced Actuator Controls */
+.actuator-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.motor-controls,
+.servo-controls {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.motor-controls h3,
+.servo-controls h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.motor-grid,
+.servo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.motor-card,
+.servo-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.motor-card:hover,
+.servo-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.motor-header,
+.servo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.motor-icon,
+.servo-icon {
+    font-size: 1.2rem;
+}
+
+.motor-label,
+.servo-label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.motor-control,
+.servo-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.motor-slider,
+.servo-slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border-color);
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: all 0.2s ease;
+}
+
+.motor-slider::-webkit-slider-thumb,
+.servo-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.motor-slider::-webkit-slider-thumb:hover,
+.servo-slider::-webkit-slider-thumb:hover {
+    background: #1976d2;
+    transform: scale(1.1);
+}
+
+.motor-slider::-moz-range-thumb,
+.servo-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.motor-value-display,
+.servo-value-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.motor-value,
+.servo-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 30px;
+    text-align: center;
+}
+
+.motor-unit,
+.servo-unit {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: normal;
+}
+
+/* Enhanced Camera Panel */
+.camera-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.camera-frame {
+    position: relative;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.camera-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.camera-image.active {
+    display: block;
+}
+
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.3) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.camera-frame:hover .camera-overlay {
+    opacity: 1;
+}
+
+.camera-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.camera-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.camera-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.camera-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+}
+
+.placeholder-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.placeholder-icon {
+    font-size: 3rem;
+    opacity: 0.7;
+}
+
+.placeholder-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.placeholder-subtext {
+    font-size: 0.9rem;
+    opacity: 0.6;
+    animation: pulse 2s infinite;
+}
+
+.camera-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.info-value {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.info-value.status-disconnected {
+    color: var(--danger-color);
+}
+
+.info-value.status-connected {
+    color: var(--secondary-color);
+}
+
+/* Enhanced Logging Styles */
+.log-panel {
+    margin-top: 20px;
+    background: var(--panel-background);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.log-panel h2 {
+    margin: 0;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1976d2 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.log-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.log-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.log-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.log-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.log-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.log-btn:active {
+    transform: scale(0.95);
+}
+
+.log-counter {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-left: 5px;
+}
+
+/* Enhanced Log Entries */
+.log-entry.debug {
+    border-left: 3px solid #6c757d;
+    opacity: 0.8;
+}
+
+.log-level.debug {
+    color: #6c757d;
+}
+
+/* Log Filter Controls */
+.log-filters {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.log-filter-label {
+    font-weight: bold;
+    color: #495057;
+    font-size: 0.85rem;
+}
+
+.log-filter {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.log-filter input[type="checkbox"] {
+    margin: 0;
+}
+
+.log-filter label {
+    font-size: 0.8rem;
+    color: #495057;
+    cursor: pointer;
+}
+
+/* Auto-scroll indicator */
+.log-scroll-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: var(--primary-color);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.log-scroll-indicator.show {
+    opacity: 0.8;
+}
+
+.log-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0;
+    position: relative;
+}
+
+/* Enhanced system alert styling */
+.alert-content {
+    padding: 20px;
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+}
+
+.alert-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    flex: 1;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+.alert-message {
+    margin-bottom: 20px;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+.alert-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.alert-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.alert-btn.primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.alert-btn.secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.alert-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Loading states for better UX */
+.panel-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.panel-loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(102, 126, 234, 0.1),
+        transparent
+    );
+}
+
+/* Line sensor display */
+.line-sensor-display {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.line-sensor-bar {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.line-sensor {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--panel-border);
+    transition: all 0.3s ease;
+    border: 1px solid var(--text-secondary);
+}
+
+.line-sensor.active {
+    background: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+.line-sensor.detected {
+    background: var(--warning-color);
+    box-shadow: 0 0 8px var(--warning-color);
+}
+
+/* Panel content wrapper for better flex layout */
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: var(--spacing);
+}
+
+/* Better spacing for movement controls container */
+.movement-controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    flex: 1;
+}
+
+/**
+ * END OF ROBOTICS CONTROLLER STYLES
+ * =================================
+ *
+ * SUMMARY OF STYLING APPROACH:
+ *
+ * 1. **CSS Variables (Custom Properties)**: Used extensively for consistent
+ *    theming, easy customization, and maintainable code. All colors, spacing,
+ *    and design tokens are defined centrally.
+ *
+ * 2. **Design System**: Consistent spacing, colors, and typography scales
+ *    ensure visual harmony and predictable behavior across components.
+ *
+ * 3. **Dark Theme**: Optimized for robotics environments where bright
+ *    interfaces can be distracting or problematic in low-light conditions.
+ *
+ * 4. **Responsive Design**: Flexbox layouts and relative units ensure the
+ *    interface works on tablets, phones, and different screen sizes.
+ *
+ * 5. **Performance Considerations**: CSS-only animations, efficient selectors,
+ *    and hardware-accelerated transforms for smooth operation on embedded devices.
+ *
+ * 6. **Accessibility**: Color contrast ratios, focus indicators, and semantic
+ *    layout structures support users with different needs and assistive technologies.
+ *
+ * 7. **Component-Based Architecture**: Each UI component has isolated styles
+ *    making it easy to modify or extend individual features without conflicts.
+ *
+ * KEY FEATURES:
+ * - Modern gradient backgrounds and shadows for depth
+ * - Interactive button states with hover and active feedback
+ * - Status indicators with appropriate color coding
+ * - Sensor data visualizations with real-time updates
+ * - Responsive grid layouts for different screen sizes
+ * - Professional typography with good readability
+ *
+ * BROWSER COMPATIBILITY:
+ * Designed for modern browsers supporting CSS Grid, Flexbox, and CSS Variables.
+ * Compatible with Chrome, Firefox, Safari, and Edge (recent versions).
+ */

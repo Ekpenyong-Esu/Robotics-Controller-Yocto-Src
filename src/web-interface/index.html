@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>🤖 Robotics Controller</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <meta
+            name="description"
+            content="Advanced robotics controller interface with real-time sensor monitoring and control"
+        />
+        <meta name="theme-color" content="#667eea" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- Modern Header with Gradient -->
+            <header>
+                <h1>🤖 Robotics Controller</h1>
+                <div class="status-bar">
+                    <span
+                        id="connection-indicator"
+                        class="status-indicator disconnected"
+                        title="Connection Status"
+                        >●</span
+                    >
+                    <span id="status-text">Initializing...</span>
+                    <span id="mode-display" class="mode-display">SYSTEM</span>
+                </div>
+            </header>
+
+            <!-- Enhanced System Alerts -->
+            <div id="system-alerts" class="system-alerts"></div>
+
+            <!-- Main Control Grid -->
+            <div class="control-grid">
+                <!-- Movement Controls -->
+                <div class="control-panel">
+                    <h2>🎮 Movement Controls</h2>
+                    <div class="movement-controls">
+                        <div class="movement-row">
+                            <button
+                                id="btn-forward"
+                                class="movement-btn"
+                                onclick="sendCommand('forward')"
+                            >
+                                ↑
+                            </button>
+                        </div>
+                        <div class="movement-row">
+                            <button
+                                id="btn-left"
+                                class="movement-btn"
+                                onclick="sendCommand('left')"
+                            >
+                                ←
+                            </button>
+                            <button
+                                id="btn-stop"
+                                class="movement-btn stop"
+                                onclick="sendCommand('stop')"
+                            >
+                                STOP
+                            </button>
+                            <button
+                                id="btn-right"
+                                class="movement-btn"
+                                onclick="sendCommand('right')"
+                            >
+                                →
+                            </button>
+                        </div>
+                        <div class="movement-row">
+                            <button
+                                id="btn-backward"
+                                class="movement-btn"
+                                onclick="sendCommand('backward')"
+                            >
+                                ↓
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Speed Control -->
+                    <div class="speed-control">
+                        <label for="speed-slider">
+                            ⚡ Speed: <span id="speed-value">50</span>%
+                        </label>
+                        <input
+                            type="range"
+                            id="speed-slider"
+                            class="speed-slider"
+                            min="10"
+                            max="100"
+                            value="50"
+                            step="5"
+                            title="Adjust movement speed"
+                        />
+                        <div class="speed-indicators">
+                            <span class="speed-label">Slow</span>
+                            <span class="speed-label">Fast</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Mode Controls -->
+                <div class="control-panel">
+                    <h2>🎯 Mode Controls</h2>
+                    <div class="mode-controls">
+                        <div class="mode-selection">
+                            <button
+                                id="btn-manual"
+                                class="mode-btn active"
+                                onclick="switchMode('manual')"
+                                data-mode="manual"
+                            >
+                                <span class="mode-icon">🎮</span>
+                                <span class="mode-text">Manual</span>
+                                <span class="mode-desc">Direct Control</span>
+                            </button>
+                            <button
+                                id="btn-autonomous"
+                                class="mode-btn"
+                                onclick="switchMode('autonomous')"
+                                data-mode="autonomous"
+                            >
+                                <span class="mode-icon">🤖</span>
+                                <span class="mode-text">Autonomous</span>
+                                <span class="mode-desc">AI Navigation</span>
+                            </button>
+                        </div>
+                        <div class="emergency-section">
+                            <button
+                                id="btn-emergency"
+                                class="emergency-btn"
+                                onclick="sendCommand('emergency')"
+                            >
+                                <span class="emergency-icon">🚨</span>
+                                <span class="emergency-text"
+                                    >EMERGENCY STOP</span
+                                >
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sensor Data Panel -->
+                <div class="status-panel">
+                    <h2>📊 Sensor Data</h2>
+                    <div id="sensor-data" class="sensor-grid">
+                        <!-- Distance Sensor -->
+                        <div class="sensor-item">
+                            <span class="sensor-icon">📏</span>
+                            <div class="sensor-info">
+                                <div class="sensor-label">Distance</div>
+                                <div id="distance-value" class="sensor-value">
+                                    -- cm
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IMU Sensor -->
+                        <div class="sensor-item">
+                            <span class="sensor-icon">🧭</span>
+                            <div class="sensor-info">
+                                <div class="sensor-label">IMU</div>
+                                <div id="imu-values" class="sensor-value">
+                                    <div>
+                                        Accel: <span id="accel-values">--</span>
+                                    </div>
+                                    <div>
+                                        Gyro: <span id="gyro-values">--</span>
+                                    </div>
+                                    <div>
+                                        Mag: <span id="mag-values">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Line Sensors -->
+                        <div class="sensor-item">
+                            <span class="sensor-icon">〰️</span>
+                            <div class="sensor-info">
+                                <div class="sensor-label">Line Sensors</div>
+                                <div
+                                    id="line-sensors"
+                                    class="sensor-value line-sensor-display"
+                                >
+                                    <div class="line-sensor-bar">
+                                        <div
+                                            class="line-sensor"
+                                            data-index="0"
+                                        ></div>
+                                        <div
+                                            class="line-sensor"
+                                            data-index="1"
+                                        ></div>
+                                        <div
+                                            class="line-sensor"
+                                            data-index="2"
+                                        ></div>
+                                        <div
+                                            class="line-sensor"
+                                            data-index="3"
+                                        ></div>
+                                        <div
+                                            class="line-sensor"
+                                            data-index="4"
+                                        ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IR Sensors -->
+                        <div class="sensor-item">
+                            <span class="sensor-icon">👁️</span>
+                            <div class="sensor-info">
+                                <div class="sensor-label">IR Sensors</div>
+                                <div id="ir-sensors" class="sensor-value">
+                                    <div>
+                                        Left:
+                                        <span id="ir-left" class="ir-indicator"
+                                            >--</span
+                                        >
+                                    </div>
+                                    <div>
+                                        Right:
+                                        <span id="ir-right" class="ir-indicator"
+                                            >--</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GPS -->
+                        <div class="sensor-item">
+                            <span class="sensor-icon">🌍</span>
+                            <div class="sensor-info">
+                                <div class="sensor-label">GPS</div>
+                                <div id="gps-values" class="sensor-value">
+                                    <div>Lat: <span id="gps-lat">--</span></div>
+                                    <div>Lon: <span id="gps-lon">--</span></div>
+                                    <div>
+                                        Alt: <span id="gps-alt">--</span>m
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Button -->
+                        <div class="sensor-item">
+                            <span class="sensor-icon">🔘</span>
+                            <div class="sensor-info">
+                                <div class="sensor-label">Button</div>
+                                <div
+                                    id="button-status"
+                                    class="sensor-value button-indicator"
+                                >
+                                    Not Pressed
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Last Update Time -->
+                    <div class="sensor-timestamp">
+                        Last update: <span id="sensor-timestamp">Never</span>
+                    </div>
+                </div>
+
+                <!-- Actuator Controls -->
+                <div class="control-panel">
+                    <h2>⚙️ Actuator Controls</h2>
+                    <div class="actuator-controls">
+                        <!-- Motor Controls -->
+                        <div class="actuator-group">
+                            <h3>Motors</h3>
+                            <div class="motor-control">
+                                <label
+                                    >Left Motor:
+                                    <span id="left-motor-value">0</span>%</label
+                                >
+                                <input
+                                    type="range"
+                                    id="left-motor-speed"
+                                    min="-100"
+                                    max="100"
+                                    value="0"
+                                    step="5"
+                                />
+                            </div>
+                            <div class="motor-control">
+                                <label
+                                    >Right Motor:
+                                    <span id="right-motor-value">0</span
+                                    >%</label
+                                >
+                                <input
+                                    type="range"
+                                    id="right-motor-speed"
+                                    min="-100"
+                                    max="100"
+                                    value="0"
+                                    step="5"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Servo Controls -->
+                        <div class="actuator-group">
+                            <h3>Servos</h3>
+                            <div class="servo-control">
+                                <label
+                                    >Pan:
+                                    <span id="servo-pan-value">90</span>°</label
+                                >
+                                <input
+                                    type="range"
+                                    id="servo-pan"
+                                    min="0"
+                                    max="180"
+                                    value="90"
+                                    step="1"
+                                />
+                            </div>
+                            <div class="servo-control">
+                                <label
+                                    >Tilt:
+                                    <span id="servo-tilt-value">90</span
+                                    >°</label
+                                >
+                                <input
+                                    type="range"
+                                    id="servo-tilt"
+                                    min="0"
+                                    max="180"
+                                    value="90"
+                                    step="1"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Camera Panel -->
+                <div class="camera-panel">
+                    <h2>📹 Camera Feed</h2>
+                    <div class="camera-container">
+                        <div id="camera-placeholder" class="camera-placeholder">
+                            <span>Camera feed will appear here</span>
+                        </div>
+                        <div class="camera-controls">
+                            <button id="camera-fullscreen" class="camera-btn">
+                                ⛶ Fullscreen
+                            </button>
+                            <button id="camera-record" class="camera-btn">
+                                ⏺️ Record
+                            </button>
+                            <button id="camera-snapshot" class="camera-btn">
+                                📸 Snapshot
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Log Panel -->
+            <div class="log-panel">
+                <div class="log-header">
+                    <h2>📋 System Log</h2>
+                    <div class="log-controls">
+                        <select id="log-level-filter">
+                            <option value="all">All Messages</option>
+                            <option value="error">Errors Only</option>
+                            <option value="warning">Warnings & Errors</option>
+                            <option value="info">Info & Above</option>
+                            <option value="debug">Debug Messages</option>
+                        </select>
+                        <button id="clear-log" class="btn-secondary">
+                            Clear Log
+                        </button>
+                        <button id="export-log" class="btn-secondary">
+                            Export Log
+                        </button>
+                    </div>
+                </div>
+                <div id="log-entries" class="log-entries"></div>
+            </div>
+
+            <!-- Footer -->
+            <footer>
+                <div class="footer-content">
+                    <div class="system-info">
+                        <span
+                            >System Status:
+                            <span id="system-status"
+                                >Initializing...</span
+                            ></span
+                        >
+                        <span
+                            >Uptime:
+                            <span id="system-uptime">00:00:00</span></span
+                        >
+                        <span>Data Rate: <span id="data-rate">0 Hz</span></span>
+                    </div>
+                    <div class="version-info">Robotics Controller v1.0.0</div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Notification Toast Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- System Alert Modal -->
+        <div id="alert-modal" class="alert-modal hidden">
+            <div class="alert-content">
+                <div class="alert-header">
+                    <h3 id="alert-title"></h3>
+                    <button id="alert-close" class="alert-close">
+                        &times;
+                    </button>
+                </div>
+                <div id="alert-message" class="alert-message"></div>
+                <div class="alert-actions">
+                    <button id="alert-ok" class="btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+        <script>
+            // Initialize the robotics controller when page loads
+            window.addEventListener("DOMContentLoaded", function () {
+                window.robotController = new RoboticsController();
+            });
+
+            function sendCommand(cmd) {
+                if (window.robotController) {
+                    window.robotController.sendCommand(cmd);
+                } else {
+                    console.error("Robotics controller not initialized");
+                }
+            }
+
+            function updateStatus() {
+                if (window.robotController) {
+                    window.robotController.updateStatus();
+                }
+            }
+        </script>
+    </body>
+</html>
