@@ -40,7 +40,7 @@ struct MotorController::Impl {
     }
 
     void setup_pwm(int pin, int frequency = 1000) {
-#ifdef HAVE_GPIOD
+// #ifdef HAVE_GPIOD
         // Setup PWM via sysfs (this is a simplified approach)
         // In a real implementation, you might use a proper PWM library
         std::string pwm_path = "/sys/class/pwm/pwmchip0/pwm" + std::to_string(pin);
@@ -68,11 +68,11 @@ struct MotorController::Impl {
             enable_file << "1";
             enable_file.close();
         }
-#endif
+// #endif
     }
 
     void set_pwm_duty_cycle(int pin, double duty_percent) {
-#ifdef HAVE_GPIOD
+// #ifdef HAVE_GPIOD
         std::string pwm_path = "/sys/class/pwm/pwmchip0/pwm" + std::to_string(pin);
         std::string duty_path = pwm_path + "/duty_cycle";
 
@@ -85,7 +85,7 @@ struct MotorController::Impl {
             duty_file << duty_ns;
             duty_file.close();
         }
-#endif
+// #endif
     }
 };
 
@@ -96,7 +96,7 @@ MotorController::~MotorController() = default;
 bool MotorController::initialize() {
     std::cout << "Initializing Dual Motor Controller..." << std::endl;
 
-#ifdef HAVE_GPIOD
+// #ifdef HAVE_GPIOD
     // Open GPIO chip
     pimpl_->chip = gpiod_chip_open_by_name("gpiochip0");
     if (!pimpl_->chip) {
@@ -140,9 +140,9 @@ bool MotorController::initialize() {
               << ", PWM " << pimpl_->left_pwm_pin
               << ", Right: GPIO " << pimpl_->right_dir1_pin << "/"
               << pimpl_->right_dir2_pin << ", PWM " << pimpl_->right_pwm_pin << ")" << std::endl;
-#else
+// #else
     std::cout << "Motor Controller initialized (simulation mode - no GPIO)" << std::endl;
-#endif
+// #endif
 
     pimpl_->running = true;
     pimpl_->status = "ready";
@@ -157,7 +157,7 @@ void MotorController::set_speed(double left_speed, double right_speed) {
     pimpl_->left_speed = left_speed;
     pimpl_->right_speed = right_speed;
 
-#ifdef HAVE_GPIOD
+// #ifdef HAVE_GPIOD
     // Set left motor direction and speed
     if (left_speed > 0) {
         // Forward
@@ -191,7 +191,7 @@ void MotorController::set_speed(double left_speed, double right_speed) {
     // Set PWM duty cycles
     pimpl_->set_pwm_duty_cycle(pimpl_->left_pwm_pin, std::abs(left_speed));
     pimpl_->set_pwm_duty_cycle(pimpl_->right_pwm_pin, std::abs(right_speed));
-#endif
+// #endif
 
     if (left_speed != 0.0 || right_speed != 0.0) {
         pimpl_->status = "running";

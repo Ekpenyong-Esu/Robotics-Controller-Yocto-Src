@@ -25,6 +25,7 @@ function(robotics_setup_dependencies)
             IMPORTED_LOCATION ${GPIOD_LIBRARY}
             INTERFACE_INCLUDE_DIRECTORIES ${GPIOD_INCLUDE_DIR}
         )
+        target_compile_definitions(gpiod INTERFACE HAVE_GPIOD=1)
         message(STATUS "Found GPIOD: ${GPIOD_LIBRARY}")
         set(GPIOD_FOUND TRUE PARENT_SCOPE)
     else()

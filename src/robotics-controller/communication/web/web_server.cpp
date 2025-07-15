@@ -120,7 +120,9 @@ struct WebServer::Impl {
 
     std::string process_request(const std::string& request) {
         std::istringstream request_stream(request);
-        std::string method, path, version;
+        std::string method;
+        std::string path;
+        std::string version;
         request_stream >> method >> path >> version;
 
         if (method == "GET") {

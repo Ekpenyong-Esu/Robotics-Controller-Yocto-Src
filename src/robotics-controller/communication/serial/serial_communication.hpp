@@ -10,6 +10,14 @@ public:
     SerialCommunication();
     ~SerialCommunication();
 
+    // Delete copy constructor and copy assignment operator
+    SerialCommunication(const SerialCommunication&) = delete;
+    SerialCommunication& operator=(const SerialCommunication&) = delete;
+
+    // Default move constructor and move assignment operator
+    SerialCommunication(SerialCommunication&&) noexcept = default;
+    SerialCommunication& operator=(SerialCommunication&&) noexcept = default;
+
     bool initialize();
     void update();
     void shutdown();

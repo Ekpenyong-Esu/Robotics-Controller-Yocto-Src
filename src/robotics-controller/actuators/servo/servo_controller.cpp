@@ -33,7 +33,7 @@ struct ServoController::Impl {
     }
 
     void setup_servo_pwm() {
-#ifdef HAVE_GPIOD
+//#ifdef HAVE_GPIOD
         // Setup PWM via sysfs for servo control
         std::string pwm_path = "/sys/class/pwm/pwmchip0/pwm" + std::to_string(servo_pin);
         std::string export_path = "/sys/class/pwm/pwmchip0/export";
@@ -63,14 +63,14 @@ struct ServoController::Impl {
 
         // Set initial position (center)
         set_pwm_angle(90.0);
-#endif
+//#endif
     }
 
     void set_pwm_angle(double angle) {
         // Clamp angle to valid range
         angle = std::clamp(angle, 0.0, 180.0);
 
-#ifdef HAVE_GPIOD
+//#ifdef HAVE_GPIOD
         // Calculate pulse width for the angle
         // 0 degrees = 1ms, 180 degrees = 2ms
         double pulse_width = MIN_PULSE_WIDTH + (angle / 180.0) * (MAX_PULSE_WIDTH - MIN_PULSE_WIDTH);
@@ -86,7 +86,7 @@ struct ServoController::Impl {
             duty_file << duty_cycle_ns;
             duty_file.close();
         }
-#endif
+//#endif
 
         current_angle = angle;
     }
@@ -99,7 +99,7 @@ ServoController::~ServoController() = default;
 bool ServoController::initialize() {
     std::cout << "Initializing Servo Controller..." << std::endl;
 
-#ifdef HAVE_GPIOD
+//#ifdef HAVE_GPIOD
     // Open GPIO chip
     pimpl_->chip = gpiod_chip_open_by_name("gpiochip0");
     if (!pimpl_->chip) {
@@ -118,9 +118,9 @@ bool ServoController::initialize() {
     pimpl_->setup_servo_pwm();
 
     std::cout << "Servo Controller initialized on GPIO " << pimpl_->servo_pin << std::endl;
-#else
+//#else
     std::cout << "Servo Controller initialized (simulation mode - no GPIO)" << std::endl;
-#endif
+//#endif
 
     pimpl_->ready = true;
     pimpl_->status = "ready";

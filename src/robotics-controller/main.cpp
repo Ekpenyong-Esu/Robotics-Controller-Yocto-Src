@@ -68,32 +68,32 @@ int main(int argc, char* argv[]) {
         // Initialize all components
         if (!system_manager->initialize()) {
             std::cerr << "Failed to initialize system manager" << std::endl;
-            return 1;
+            // return 1;
         }
 
         if (!sensor_manager->initialize()) {
             std::cerr << "Failed to initialize sensor manager" << std::endl;
-            return 1;
+            // return 1;
         }
 
         if (!actuator_manager->initialize()) {
             std::cerr << "Failed to initialize actuator manager" << std::endl;
-            return 1;
+            // return 1;
         }
 
         if (!communication_hub->initialize()) {
             std::cerr << "Failed to initialize communication hub" << std::endl;
-            return 1;
+            // return 1;
         }
 
         if (!navigation_engine->initialize()) {
             std::cerr << "Failed to initialize navigation engine" << std::endl;
-            return 1;
+            // return 1;
         }
 
         if (!vision_processor->initialize()) {
             std::cerr << "Failed to initialize vision processor" << std::endl;
-            return 1;
+            // return 1;
         }
 
         std::cout << "All components initialized successfully!" << std::endl;

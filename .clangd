@@ -4,14 +4,14 @@ CompileFlags:
         # System OpenCV headers
         - -I/usr/include/opencv4
         # Project source directories
-        - -I/home/mahon/Robotics-Controller-Yocto/src
-        - -I/home/mahon/Robotics-Controller-Yocto/src/robotics-controller
+        - -I/home/mahon/Robotic-controller-Src/src
+        - -I/home/mahon/Robotic-controller-Src/src/robotics-controller
         # Config directory for version.hpp.in and other config files
-        - -I/home/mahon/Robotics-Controller-Yocto/src/robotics-controller/config
+        - -I/home/mahon/Robotic-controller-Src/src/robotics-controller/config
         # Build directory for generated files (including version.hpp)
-        - -I/home/mahon/Robotics-Controller-Yocto/src/build
-        - -I/home/mahon/Robotics-Controller-Yocto/src/build/robotics-controller
-        - -I/home/mahon/Robotics-Controller-Yocto/src/build/robotics-controller/config
+        - -I/home/mahon/Robotic-controller-Src/src/build
+        - -I/home/mahon/Robotic-controller-Src/src/build/robotics-controller
+        - -I/home/mahon/Robotic-controller-Src/src/build/robotics-controller/config
         - -DHAVE_OPENCV=1
         - -std=c++17
 
