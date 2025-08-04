@@ -12,6 +12,9 @@ namespace robotics {
  */
 class ActuatorManager {
 public:
+    // Constants for servo control
+    static constexpr double DEFAULT_SMOOTH_SPEED = 0.1; // Default smooth movement speed
+
     ActuatorManager();
     ~ActuatorManager();
 
@@ -43,6 +46,30 @@ public:
      * @param angle Servo angle in degrees (0-180)
      */
     void set_servo_angle(double angle);
+
+    /**
+     * @brief Set servo angle with smooth movement
+     * @param angle Servo angle in degrees (0-180)
+     * @param speed Movement speed factor (DEFAULT_SMOOTH_SPEED = slow, 1.0 = immediate)
+     */
+    void set_servo_angle_smooth(double angle, double speed = DEFAULT_SMOOTH_SPEED);
+
+    /**
+     * @brief Center the servo to 90 degrees
+     */
+    void center_servo();
+
+    /**
+     * @brief Get current servo angle from the servo controller
+     * @return Current servo angle in degrees, or -1.0 if not available
+     */
+    double get_current_servo_angle() const;
+
+    /**
+     * @brief Get target servo angle from the servo controller
+     * @return Target servo angle in degrees, or -1.0 if not available
+     */
+    double get_target_servo_angle() const;
 
     /**
      * @brief Get current motor speeds

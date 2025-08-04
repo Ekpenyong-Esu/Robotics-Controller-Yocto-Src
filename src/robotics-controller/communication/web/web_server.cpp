@@ -28,6 +28,7 @@ struct WebServer::Impl {
     double right_motor_speed = 0.0;
 
     ~Impl() {
+        std::cerr << "[WebServer::Impl] Destructor called" << std::endl;
         stop_server();
     }
 
@@ -74,14 +75,23 @@ struct WebServer::Impl {
     }
 
     void stop_server() {
+        std::cerr << "[WebServer::Impl] stop_server() called" << std::endl;
         running = false;
+        // Closing the socket will unblock accept() in the server thread
         if (server_socket >= 0) {
+            std::cerr << "[WebServer::Impl] Closing server socket..." << std::endl;
             close(server_socket);
             server_socket = -1;
         }
         if (server_thread.joinable()) {
-            server_thread.join();
+            std::cerr << "[WebServer::Impl] Joining server thread..." << std::endl;
+            try {
+                server_thread.join();
+            } catch (const std::system_error& e) {
+                std::cerr << "[WebServer::Impl] Exception joining thread: " << e.what() << std::endl;
+            }
         }
+        std::cerr << "[WebServer::Impl] stop_server() complete" << std::endl;
     }
 
     void server_loop() {

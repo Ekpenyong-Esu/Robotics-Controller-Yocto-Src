@@ -101,9 +101,13 @@ int main(int argc, char* argv[]) {
 
         // Main control loop
         const auto loop_duration = std::chrono::milliseconds(100); // 10Hz
+        int loop_count = 0; // Add counter for debugging
 
         while (running) {
             auto loop_start = std::chrono::steady_clock::now();
+            loop_count++; // Increment counter for debugging
+
+            std::cout << "Loop iteration: " << loop_count << std::endl;
 
             // Update sensors
             sensor_manager->update();
