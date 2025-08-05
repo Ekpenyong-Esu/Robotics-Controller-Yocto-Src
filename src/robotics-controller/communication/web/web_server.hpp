@@ -1,9 +1,10 @@
-#pragma once
+#pragma once // Ensure single inclusion
 
-#include <memory>
-#include <string>
+#include <memory>   // For std::unique_ptr
+#include <string>   // For status and API data
 
 namespace robotics {
+// WebServer provides an HTTP interface for robot control and status
 
 /**
  * @brief HTTP web server for robot control interface
@@ -12,36 +13,33 @@ namespace robotics {
  */
 class WebServer {
 public:
-    WebServer();
-    ~WebServer();
+    WebServer();   // Constructor
+    ~WebServer();  // Destructor
 
-    // Rule of five: delete copy, default move
+    // Non-copyable, movable
     WebServer(const WebServer&) = delete;
     WebServer& operator=(const WebServer&) = delete;
     WebServer(WebServer&&) noexcept = default;
     WebServer& operator=(WebServer&&) noexcept = default;
 
+    // Initialize the web server (setup resources, does not start serving)
     bool initialize();
+    // Update server state (placeholder for future logic)
     void update();
+    // Shutdown the web server and clean up resources
     void shutdown();
 
-    /**
-     * @brief Get server status
-     * @return Status string
-     */
+    // Get current server status string
     std::string get_status() const;
 
-    /**
-     * @brief Update robot state for API responses
-     * @param status Robot status string
-     * @param left_speed Left motor speed
-     * @param right_speed Right motor speed
-     */
+    // Set robot state for API responses
+    // status: robot status string
+    // left_speed, right_speed: motor speeds
     void set_robot_state(const std::string& status, double left_speed, double right_speed);
 
 private:
-    struct Impl;
-    std::unique_ptr<Impl> pimpl_;
+    struct Impl;                    // Private implementation
+    std::unique_ptr<Impl> pimpl_;   // Pointer to implementation
 };
 
 } // namespace robotics

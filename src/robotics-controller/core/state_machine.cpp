@@ -7,7 +7,7 @@ struct StateMachine::Impl {
     State current_state = State::INIT;
     State previous_state = State::INIT;
 
-    bool is_valid_transition(State from, State to) {
+    static bool is_valid_transition(State from, State to) {
         // Define valid state transitions
         switch (from) {
             case State::INIT:

@@ -1,30 +1,32 @@
-#pragma once
+#pragma once // Ensure single inclusion
 
-#include <memory>
-#include <string>
+#include <memory>   // For std::unique_ptr
+#include <string>   // For device path and status
 
 namespace robotics {
+// SerialCommunication provides an interface for serial port management
 
 class SerialCommunication {
 public:
-    SerialCommunication();
-    ~SerialCommunication();
+    SerialCommunication();   // Constructor
+    ~SerialCommunication();  // Destructor
 
-    // Delete copy constructor and copy assignment operator
+    // Non-copyable, movable
     SerialCommunication(const SerialCommunication&) = delete;
     SerialCommunication& operator=(const SerialCommunication&) = delete;
-
-    // Default move constructor and move assignment operator
     SerialCommunication(SerialCommunication&&) noexcept = default;
     SerialCommunication& operator=(SerialCommunication&&) noexcept = default;
 
+    // Initialize serial communication (does not open port)
     bool initialize();
+    // Update communication (placeholder)
     void update();
+    // Shutdown communication
     void shutdown();
 
 private:
-    struct Impl;
-    std::unique_ptr<Impl> pimpl_;
+    struct Impl;                    // Private implementation
+    std::unique_ptr<Impl> pimpl_;   // Pointer to implementation
 };
 
 } // namespace robotics
